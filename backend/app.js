@@ -1,4 +1,5 @@
 //// IMPORT ////
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -13,19 +14,8 @@ const limiter = rateLimit({
 });
 
 //// CONNECT DB ////
-
+require("./mongodb");
 /// mongo sanitize
-/// dot.env , appeler les variables. Ne pas envoeyr le .env . Crrer un .env copy, (juste laisser les variables )
-//avec le nom des variables gloables appelée . MDP avec ses bases de données. .env à ignore
-// read me . cloner le projet coté back , ( base mongo DB)
-
-mongoose
-  .connect(
-    "mongodb+srv://openclassrooms:openclassrooms@piiquante.eqexxqm.mongodb.net/?retryWrites=true&w=majority",
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
-  .then(() => console.log("Connexion à MongoDB réussie !"))
-  .catch(() => console.log("Connexion à MongoDB échouée !"));
 
 //// SET HEADERS ////
 app.use((req, res, next) => {
