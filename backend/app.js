@@ -11,6 +11,7 @@ const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
 });
+const mongoSanitize = require("express-mongo-sanitize");
 
 //// CONNECT DB ////
 require("./mongodb");
@@ -36,6 +37,7 @@ app.use(express.json()); //lets read json content of  body request
 app.use(limiter); // limit the number of request
 app.use("/images", express.static(path.join(__dirname, "images"))); //img repertory
 app.use(helmet());
+app.use(mongoSanitize());
 
 //// ROUTES ////
 app.use("/api/sauces", saucesRoutes);
