@@ -37,7 +37,6 @@ créer un fichier `.env` en complétant les valeurs :
 ```
 USER_DB = '<Nom d'utilisateur mongoDB>'
 PASSWORD_DB = '<Mot de passe mongoDB>'
-PASSWORD_JWT = '<Clé secrète token>'
 NAME_DATABASE = '<Nom base de donnée mongoDB>'
 ```
 
