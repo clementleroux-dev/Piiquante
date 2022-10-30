@@ -18,7 +18,7 @@ exports.createSauces = (req, res, next) => {
     likes: 0,
     dislikes: 0,
   });
-  sauce
+  return sauce
     .save()
     .then(() => {
       res.status(201).json({ message: "Objet enregistré !" });
@@ -30,14 +30,14 @@ exports.createSauces = (req, res, next) => {
 
 //// CONTROLLERS GET - ONE ////
 exports.getSauces = (req, res, next) => {
-  Sauces.findOne({ _id: req.params.id })
+  return Sauces.findOne({ _id: req.params.id })
     .then((sauces) => res.status(200).json(sauces))
     .catch((error) => res.status(404).json({ error }));
 };
 
 //// CONTROLLERS GET - ALL ////
 exports.getAllSauces = (req, res, next) => {
-  Sauces.find()
+  return Sauces.find()
     .then((sauces) => res.status(200).json(sauces))
     .catch((error) => res.status(404).json({ error }));
 };
@@ -53,13 +53,13 @@ exports.modifySauces = (req, res, next) => {
       }
     : { ...req.body };
   delete saucesObject._userId;
-  Sauces.findOne({ _id: req.params.id })
+  return Sauces.findOne({ _id: req.params.id })
     .then((sauces) => {
       if (sauces.userId != req.auth.userId) {
         //Only sauce create by user itself can be delete
-        res.status(401).json({ error: "Not authorized" });
+        return res.status(401).json({ error: "Not authorized" });
       } else {
-        Sauces.updateOne(
+        return Sauces.updateOne(
           { _id: req.params.id }, //comparision object
           { ...saucesObject, _id: req.params.id } // new object
         )
@@ -74,16 +74,16 @@ exports.modifySauces = (req, res, next) => {
 
 //// CONTROLLERS DELETE ////
 exports.deleteSauces = (req, res, next) => {
-  Sauces.findOne({ _id: req.params.id })
+  return Sauces.findOne({ _id: req.params.id })
     .then((sauces) => {
       if (sauces.userId != req.auth.userId) {
         //Only sauce create by user itself can be delete
-        res.status(401).json({ message: "Not authorized" });
+        return res.status(401).json({ message: "Not authorized" });
       } else {
         const filename = sauces.imageUrl.split("/images/")[1]; ////extract img from irl
-        fs.unlink(`images/${filename}`, () => {
+        return fs.unlink(`images/${filename}`, () => {
           //delete img
-          Sauces.deleteOne({ _id: req.params.id }) //delete object from DB
+          return Sauces.deleteOne({ _id: req.params.id }) //delete object from DB
             .then(() => {
               res.status(202).json({ message: "Objet supprimé !" });
             })
@@ -98,7 +98,7 @@ exports.deleteSauces = (req, res, next) => {
 
 //// CONTROLLERS LIKE ////
 exports.likeSauces = (req, res, next) => {
-  Sauces.findById(req.params.id)
+  return Sauces.findById(req.params.id)
     .then((sauce) => {
       let userId = req.body.userId;
       let usersLiked = sauce.usersLiked;
@@ -129,7 +129,7 @@ exports.likeSauces = (req, res, next) => {
       const likes = usersLiked.length;
       const dislikes = usersDisliked.length;
 
-      sauce
+      return sauce
         .updateOne({
           usersLiked: usersLiked,
           usersDisliked: usersDisliked,

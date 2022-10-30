@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken"); // token
 
 //// SIGNUP CONTROLLERS ////
 exports.signup = (req, res, next) => {
-  bcrypt
+  return bcrypt
     .hash(req.body.password, 10) // Hash password
     .then((hash) => {
       //create new object
@@ -14,7 +14,7 @@ exports.signup = (req, res, next) => {
         password: hash,
       });
 
-      user //save in DB
+      return user //save in DB
         .save()
         .then(() => res.status(201).json({ message: "Nouvel utilisateur" }))
         .catch((error) => res.status(500).json({ error }));
@@ -24,13 +24,13 @@ exports.signup = (req, res, next) => {
 
 //// LOGIN CONTROLLERS ////
 exports.login = (req, res, next) => {
-  User.findOne({ email: req.body.email })
+  return User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
         //Check if user exist
         return res.status(404).json({ error: "Utilisateur non trouvé !" }); //user not exist
       }
-      bcrypt // compare password
+      return bcrypt // compare password
         .compare(req.body.password, user.password)
         .then((valid) => {
           if (!valid) {

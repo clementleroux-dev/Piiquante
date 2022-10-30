@@ -4,7 +4,7 @@
 
 Developpement du backend de l'application Piiquante
 
-## Technologies :
+## Pre-requis:
 
 - Node.js
 - Express
@@ -38,6 +38,7 @@ créer un fichier `.env` en complétant les valeurs :
 USER_DB = '<Nom d'utilisateur mongoDB>'
 PASSWORD_DB = '<Mot de passe mongoDB>'
 NAME_DATABASE = '<Nom base de donnée mongoDB>'
+RANDOM_TOKEN_SECRET = 'Clé secrete JWTOKEN'
 ```
 
 Démarrer ensuite le serveur avec la commande `nodemon server` ou `node server`
